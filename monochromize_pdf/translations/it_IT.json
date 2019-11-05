@@ -1,0 +1,13 @@
+{
+  "it_IT": {
+    "Monochromize PDF": "Monocromizza PDF",
+    "Transform a PDF into a monochrome B/N 2 colors PDF": "Trasforma un PDF in B/N 2 colori",
+    "Transform a PDF into a monochrome B/N 2 colors PDF, minimizing size": "Converte un PDF in un PDF B/N 2 colori, riducendo la dimensione",
+    "File to convert": "File da convertire",
+    "Contrast": "Contrasto",
+    "Curves (X)": "Curve (X)",
+    "The file %s does not exists": "Il file %s non esiste",
+    "The file %s does not have pdf extension": "Il file %s non ha estensione pdf",
+    "Converted file saved in %s": "File convertito, salvato in %s"
+  }
+}
