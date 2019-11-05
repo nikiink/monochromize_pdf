@@ -48,15 +48,14 @@ def monochromize_pdf(input_file, contrast, curves_x):
         return
     
     ###
-    ### CODICE PER APRIRE UN PDF, TRASFORMARLO IN BN 2 COLORI E SALVARLO
+    ### CODE TO OPEN A PDF, TRANSFORM IT IN B/W 2 COLORS AND SAVE IT
     ###
-    # DIRETTAMENTE DA PDF
     pdf_input_filename = input_file
     image = pdb.file_pdf_load2(pdf_input_filename, pdf_input_filename, "", 0, [])
     display = None
-    #display = pdb.gimp_display_new(image) #decommentare se si vuole vedere il pdf a schermo
+    #display = pdb.gimp_display_new(image) #decomment to see the pdf opened on screen
     
-    # Converto grayscale
+    # Convert to grayscale
     pdb.gimp_image_convert_grayscale(image)
     
     pdb.gimp_image_get_layers(image)
@@ -68,32 +67,32 @@ def monochromize_pdf(input_file, contrast, curves_x):
     
     for layer_id in layers_ids:
       layer = gimp.Item.from_id(layer_id)
-      # Devo ingradire l'immagine, altrimenti vengono usate le dimensioni della prima pagina
-      # per tutte le pagine (nel caso le pagine abbiano dimensioni diverse tra loro)
+      # I have to normalize the image, to max width and max height of all pages
+      # if pages have different size
       max_width = max(layer.width, max_width)
       max_height = max(layer.height, max_height)
       
-      # Colori - Curve num-points: numero valori x e y = numero punti * 2, control-pts: x1,y1,x2,y2,...
-      # almeno due punti 0,0,255,255
+      # Colors - Curves num-points: number of x and y values = number of points * 2, control-pts: x1,y1,x2,y2,...
+      # at least 2 points 0,0,255,255
       pdb.gimp_curves_spline(layer, HISTOGRAM_VALUE, 6, (0,0,140,0,255,255)) 
       
-      # CONTRASTO
+      # CONTRAST
       pdb.gimp_brightness_contrast(layer, 0, 20)
     
-    # Ridimensiono l'immagine in base alle dimensioni piu' grandi dei vari layer
+    # Resize image to max width and height between layers
     image.resize(max_width, max_height)
     
-    # Conversione 2 colori b/n
+    # Convert to 2 colors b/w
     pdb.gimp_image_convert_indexed(image, NO_DITHER, MONO_PALETTE, 2, False, True, "")  
     
-    # Salvataggio file pdf
-    pdf_output_filename = pdf_input_filename + "-bn.pdf"
+    # Now save the converted pdf file
+    pdf_output_filename = pdf_input_filename + "-bw.pdf"
     drawable = pdb.gimp_image_active_drawable(image)
     # flags: ignore-hidden, apply-masks, layers-as-pages, reverse-order
     pdb.file_pdf_save2(image, drawable, pdf_output_filename, pdf_output_filename, False, False, True, True, True)
     
     if display != None:
-      pdb.gimp_display_delete(display) #elimina anche l'oggetto image
+      pdb.gimp_display_delete(display) #destroy image object
     else:
       pdb.gimp_image_delete(image)
     
@@ -101,8 +100,8 @@ def monochromize_pdf(input_file, contrast, curves_x):
 
 register(
     "python-fu-monochromize-pdf",
-    i18n.t("Transform a PDF into a monochrome B/N 2 colors PDF, minimizing size"),
-    i18n.t("Transform a PDF into a monochrome B/N 2 colors PDF"),
+    i18n.t("Transform a PDF into a monochrome B/W 2 colors PDF, minimizing size"),
+    i18n.t("Transform a PDF into a monochrome B/W 2 colors PDF"),
     "Nicola Inchingolo", "Nicola Inchingolo", "2019",
     i18n.t("Monochromize PDF"),
     "", # type of image it works on (*, RGB, RGB*, RGBA, GRAY etc...)
