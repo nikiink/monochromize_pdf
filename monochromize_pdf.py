@@ -47,11 +47,16 @@ def monochromize_pdf(input_file, contrast, curves_x):
         pdb.gimp_message(i18n.t("The file %s does not have pdf extension") % input_file)
         return
     
+    output_filename = input_file + "-bw.pdf"
+    if os.path.isfile(output_filename):
+        pdb.gimp_message(i18n.t("The output file %s already exists, delete it and retry") % output_filename)
+        return
+    
+    
     ###
     ### CODE TO OPEN A PDF, TRANSFORM IT IN B/W 2 COLORS AND SAVE IT
     ###
-    pdf_input_filename = input_file
-    image = pdb.file_pdf_load2(pdf_input_filename, pdf_input_filename, "", 0, [])
+    image = pdb.file_pdf_load2(input_file, input_file, "", 0, [])
     display = None
     #display = pdb.gimp_display_new(image) #decomment to see the pdf opened on screen
     
@@ -86,17 +91,16 @@ def monochromize_pdf(input_file, contrast, curves_x):
     pdb.gimp_image_convert_indexed(image, NO_DITHER, MONO_PALETTE, 2, False, True, "")  
     
     # Now save the converted pdf file
-    pdf_output_filename = pdf_input_filename + "-bw.pdf"
     drawable = pdb.gimp_image_active_drawable(image)
     # flags: ignore-hidden, apply-masks, layers-as-pages, reverse-order
-    pdb.file_pdf_save2(image, drawable, pdf_output_filename, pdf_output_filename, False, False, True, True, True)
+    pdb.file_pdf_save2(image, drawable, output_filename, output_filename, False, False, True, True, True)
     
     if display != None:
       pdb.gimp_display_delete(display) #destroy image object
     else:
       pdb.gimp_image_delete(image)
     
-    pdb.gimp_message(i18n.t("Converted file saved in: %s") % pdf_output_filename)
+    pdb.gimp_message(i18n.t("Converted file saved in %s") % output_filename)
 
 register(
     "python-fu-monochromize-pdf",

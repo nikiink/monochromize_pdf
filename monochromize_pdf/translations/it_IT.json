@@ -8,6 +8,7 @@
     "Curves (X)": "Curve (X)",
     "The file %s does not exists": "Il file %s non esiste",
     "The file %s does not have pdf extension": "Il file %s non ha estensione pdf",
-    "Converted file saved in %s": "File convertito, salvato in %s"
+    "Converted file saved in %s": "File convertito, salvato in %s",
+    "The output file %s already exists, delete it and retry": "Il file di output %s già esiste. Cancellalo e riprova"
   }
 }
