@@ -93,7 +93,7 @@ def monochromize_pdf(input_file, contrast, curves_x):
     # Now save the converted pdf file
     drawable = pdb.gimp_image_active_drawable(image)
     # flags: ignore-hidden, apply-masks, layers-as-pages, reverse-order
-    pdb.file_pdf_save2(image, drawable, output_filename, output_filename, False, False, True, True, True)
+    pdb.file_pdf_save2(image, drawable, output_filename, output_filename, False, False, True, True, False)
     
     if display != None:
       pdb.gimp_display_delete(display) #destroy image object
